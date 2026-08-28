@@ -11,6 +11,11 @@ export const examples: Record<string, GameSpec> = {
     collectible: 'forest-star',
     requestedMechanics: ['collectibles', 'hazards', 'patrol-enemy'],
     difficulty: 'normal',
+    gameplay: { moveSpeed: 245, jumpSpeed: 440 },
+    presentation: {
+      backgroundColor: '#86c96f',
+      hud: { healthLabel: 'Hearts', panelColor: 0x17351e },
+    },
   },
   'robot-top-down': {
     id: 'robot-top-down',
@@ -28,6 +33,11 @@ export const examples: Record<string, GameSpec> = {
       'projectile-shooting',
     ],
     difficulty: 'normal',
+    gameplay: { moveSpeed: 235, projectileCooldown: 180 },
+    presentation: {
+      backgroundColor: '#102f35',
+      hud: { healthLabel: 'Power', panelColor: 0x071c24 },
+    },
   },
   'space-runner': {
     id: 'space-runner',
@@ -40,5 +50,10 @@ export const examples: Record<string, GameSpec> = {
     collectible: 'star-token',
     requestedMechanics: ['hazards', 'collectibles', 'timer'],
     difficulty: 'hard',
+    gameplay: { baseSpeed: 220, maxSpeedBonus: 150, jumpSpeed: 450 },
+    presentation: {
+      backgroundColor: '#17134a',
+      hud: { showHealth: false, scoreLabel: 'Distance' },
+    },
   },
 };

@@ -2,20 +2,39 @@ import Phaser from 'phaser';
 import { TEXTURES } from '../../core/assets/PlaceholderAssets';
 import { configureCamera, shakeCamera } from '../../core/camera/CameraHelpers';
 import { BaseGameScene } from '../../core/game/BaseGameScene';
+import {
+  normalizeArchetypeOptions,
+  type CommonArchetypeOptions,
+} from '../ArchetypeOptions';
+
+export type PlatformerOptions = CommonArchetypeOptions & {
+  moveSpeed?: number;
+  jumpSpeed?: number;
+  enemySpeed?: number;
+  scorePerCollectible?: number;
+};
 
 export class PlatformerScene extends BaseGameScene {
   private collected = 0;
-  constructor(private readonly gameTitle = 'Platformer') {
+  private readonly options: PlatformerOptions;
+  constructor(options?: string | PlatformerOptions) {
     super('platformer');
+    this.options = normalizeArchetypeOptions(options);
   }
   create(): void {
     this.collected = 0;
-    this.cameras.main.setBackgroundColor('#7dd3fc');
-    this.initialize(
-      this.gameTitle,
-      '← → move · Space jumps · R restarts',
-      'Collect all 5 stars',
+    this.cameras.main.setBackgroundColor(
+      this.options.backgroundColor ?? '#7dd3fc',
     );
+    this.initialize({
+      title: this.options.title ?? 'Platformer',
+      controls:
+        this.options.controlsText ?? '← → move · Space jumps · R restarts',
+      objective: this.options.objective ?? 'Collect all 5 stars',
+      health: this.options.health,
+      hud: this.options.hud,
+      input: this.options.input,
+    });
     this.physics.world.setBounds(0, 0, 1800, 540);
     const platforms = this.physics.add.staticGroup();
     for (const [x, y, width] of [
@@ -49,8 +68,8 @@ export class PlatformerScene extends BaseGameScene {
     this.physics.add.overlap(this.player, items, (_player, item) => {
       (item as Phaser.Physics.Arcade.Sprite).disableBody(true, true);
       this.collected += 1;
-      this.session.addScore(10);
-      this.objective = `Collect all 5 stars (${this.collected}/5)`;
+      this.session.addScore(this.options.scorePerCollectible ?? 10);
+      this.objective = `${this.options.objective ?? 'Collect all 5 stars'} (${this.collected}/5)`;
       if (this.collected === 5) this.win();
     });
     const hazards = this.physics.add.staticGroup();
@@ -62,7 +81,7 @@ export class PlatformerScene extends BaseGameScene {
     });
     const enemy = this.physics.add
       .sprite(1020, 300, TEXTURES.enemy)
-      .setVelocityX(80)
+      .setVelocityX(this.options.enemySpeed ?? 80)
       .setBounce(1)
       .setCollideWorldBounds(true);
     this.physics.add.collider(enemy, platforms);
@@ -72,10 +91,14 @@ export class PlatformerScene extends BaseGameScene {
     if (!this.commonUpdate(delta) || !this.player) return;
     const body = this.player.body as Phaser.Physics.Arcade.Body;
     this.player.setVelocityX(
-      this.controls.left.isDown ? -230 : this.controls.right.isDown ? 230 : 0,
+      this.controls.left.isDown
+        ? -(this.options.moveSpeed ?? 230)
+        : this.controls.right.isDown
+          ? (this.options.moveSpeed ?? 230)
+          : 0,
     );
     if (Phaser.Input.Keyboard.JustDown(this.controls.jump) && body.blocked.down)
-      this.player.setVelocityY(-430);
+      this.player.setVelocityY(-(this.options.jumpSpeed ?? 430));
     if (this.player.y > 535) this.lose();
   }
 }
