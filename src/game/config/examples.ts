@@ -1,6 +1,7 @@
 import type { GameSpec } from './GameSpec';
 export const examples: Record<string, GameSpec> = {
   'forest-platformer': {
+    id: 'forest-platformer',
     archetype: 'platformer',
     title: 'Forest Star Rescue',
     theme: 'forest',
@@ -12,6 +13,7 @@ export const examples: Record<string, GameSpec> = {
     difficulty: 'normal',
   },
   'robot-top-down': {
+    id: 'robot-top-down',
     archetype: 'top-down',
     title: 'Robot Crystal Sweep',
     theme: 'robot-lab',
@@ -28,6 +30,7 @@ export const examples: Record<string, GameSpec> = {
     difficulty: 'normal',
   },
   'space-runner': {
+    id: 'space-runner',
     archetype: 'runner',
     title: 'Comet Lane',
     theme: 'space',

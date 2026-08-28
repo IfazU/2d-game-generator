@@ -1,5 +1,6 @@
 export type ArchetypeId = 'platformer' | 'top-down' | 'runner';
 export type GameSpec = {
+  id: string;
   archetype: ArchetypeId;
   title: string;
   theme?: string;
@@ -12,6 +13,7 @@ export type GameSpec = {
   visualStyle?: string;
 };
 export const gameSpec: GameSpec = {
+  id: 'platformer',
   archetype: 'platformer',
   title: 'New Agent Game',
   theme: 'placeholder',

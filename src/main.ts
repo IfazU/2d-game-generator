@@ -1,24 +1,12 @@
 import Phaser from 'phaser';
-import { SandboxScene } from './archetypes/sandbox/SandboxScene';
-import { PlatformerScene } from './archetypes/platformer/PlatformerScene';
-import { TopDownScene } from './archetypes/top-down/TopDownScene';
-import { RunnerScene } from './archetypes/runner/RunnerScene';
-import { examples } from './game/config/examples';
+import { createDefaultCatalog } from './game/catalog/defaultCatalog';
+import { selectGameId } from './game/catalog/GameCatalog';
+import { gameSpec } from './game/config/GameSpec';
 import './style.css';
 
-const requested =
-  new URLSearchParams(location.search).get('archetype') ?? 'platformer';
-const exampleId = new URLSearchParams(location.search).get('example');
-const example = exampleId ? examples[exampleId] : undefined;
-const selected = example?.archetype ?? requested;
-const scene =
-  selected === 'sandbox'
-    ? new SandboxScene()
-    : selected === 'top-down'
-      ? new TopDownScene(example?.title)
-      : selected === 'runner'
-        ? new RunnerScene(example?.title)
-        : new PlatformerScene(example?.title);
+const catalog = createDefaultCatalog();
+const selectedId = selectGameId(location.search, gameSpec.id);
+const scene = catalog.require(selectedId).createScene();
 new Phaser.Game({
   type: Phaser.AUTO,
   parent: 'game-container',
