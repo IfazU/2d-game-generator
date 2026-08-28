@@ -94,3 +94,70 @@ for (const archetype of cases) {
     expect(fatalErrors).toEqual([]);
   });
 }
+
+test('dragon volcano game flaps, scores, loses, and restarts', async ({
+  page,
+}) => {
+  const fatalErrors: string[] = [];
+  page.on('pageerror', (error) => fatalErrors.push(error.message));
+  await page.goto('/?game=dragon-volcano-flap');
+  await expect(page.locator('canvas')).toBeVisible();
+  await page.waitForFunction(
+    () => window.__GAME_DEBUG__?.getState().phase === 'playing',
+  );
+
+  const before = await page.evaluate(() =>
+    window.__GAME_DEBUG__!.getPlayerPosition()!,
+  );
+  await page.keyboard.press('Space');
+  await page.waitForTimeout(180);
+  const after = await page.evaluate(() =>
+    window.__GAME_DEBUG__!.getPlayerPosition()!,
+  );
+  expect(after.y).toBeLessThan(before.y);
+
+  const scoreDeadline = Date.now() + 12_000;
+  while (
+    (await page.evaluate(() => window.__GAME_DEBUG__!.getScore())) < 1 &&
+    Date.now() < scoreDeadline
+  ) {
+    const state = await page.evaluate(() => ({
+      position: window.__GAME_DEBUG__!.getPlayerPosition()!,
+      lost: window.__GAME_DEBUG__!.isLost(),
+    }));
+    expect(state.lost).toBe(false);
+    if (state.position.y > 290) await page.keyboard.press('Space');
+    await page.waitForTimeout(100);
+  }
+  expect(
+    await page.evaluate(() => window.__GAME_DEBUG__!.getScore()),
+  ).toBeGreaterThanOrEqual(1);
+
+  await page.waitForFunction(() => window.__GAME_DEBUG__!.isLost(), undefined, {
+    timeout: 5_000,
+  });
+  await page.keyboard.press('r');
+  await page.waitForFunction(
+    () => window.__GAME_DEBUG__?.getState().phase === 'playing',
+  );
+  expect(await page.evaluate(() => window.__GAME_DEBUG__!.getScore())).toBe(0);
+
+  const collisionDeadline = Date.now() + 10_000;
+  while (
+    !(await page.evaluate(() => window.__GAME_DEBUG__!.isLost())) &&
+    Date.now() < collisionDeadline
+  ) {
+    const position = await page.evaluate(() =>
+      window.__GAME_DEBUG__!.getPlayerPosition()!,
+    );
+    if (position.y > 210) await page.keyboard.press('Space');
+    await page.waitForTimeout(100);
+  }
+  const collisionPosition = await page.evaluate(() =>
+    window.__GAME_DEBUG__!.getPlayerPosition()!,
+  );
+  expect(await page.evaluate(() => window.__GAME_DEBUG__!.isLost())).toBe(true);
+  expect(collisionPosition.y).toBeGreaterThan(100);
+  expect(collisionPosition.y).toBeLessThan(500);
+  expect(fatalErrors).toEqual([]);
+});

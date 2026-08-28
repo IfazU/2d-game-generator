@@ -12,12 +12,16 @@ export type GameSpec = {
   visualStyle?: string;
 };
 export const gameSpec: GameSpec = {
-  archetype: 'platformer',
-  title: 'New Agent Game',
-  theme: 'placeholder',
-  player: { name: 'Hero' },
-  objective: { description: 'Complete the archetype objective' },
-  requestedMechanics: ['collectibles', 'hazards'],
+  archetype: 'runner',
+  title: 'Emberwing: Volcano Flight',
+  theme: 'volcanic caldera',
+  player: { name: 'Emberwing', asset: 'dragon.player' },
+  objective: {
+    description: 'Flap through volcanic gaps and survive for a high score',
+    type: 'endless-score',
+  },
+  enemies: ['volcano-column'],
+  requestedMechanics: ['hazards'],
   difficulty: 'normal',
-  visualStyle: 'clean placeholder shapes',
+  visualStyle: 'bold code-generated volcanic silhouettes and glowing lava',
 };

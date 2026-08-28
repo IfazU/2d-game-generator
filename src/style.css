@@ -1,7 +1,7 @@
 :root {
   color-scheme: dark;
   font-family: Inter, system-ui, sans-serif;
-  background: #090d18;
+  background: #120811;
 }
 * {
   box-sizing: border-box;
@@ -11,7 +11,9 @@ body {
   min-height: 100vh;
   display: grid;
   place-items: center;
-  background: radial-gradient(circle at top, #23345f, #090d18 65%);
+  background:
+    radial-gradient(circle at 70% 15%, #7f271f 0, transparent 28%),
+    radial-gradient(circle at top, #3d1939, #100810 68%);
 }
 #app {
   width: min(100vw, 1000px);
@@ -20,10 +22,12 @@ body {
 #game-container {
   width: 100%;
   aspect-ratio: 16 / 9;
-  border: 2px solid #6077b8;
+  border: 2px solid #c44d2a;
   border-radius: 12px;
   overflow: hidden;
-  box-shadow: 0 24px 70px #000a;
+  box-shadow:
+    0 24px 70px #000a,
+    0 0 28px #e94c2238;
 }
 canvas {
   display: block;

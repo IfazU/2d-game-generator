@@ -4,6 +4,7 @@ import { PlatformerScene } from './archetypes/platformer/PlatformerScene';
 import { TopDownScene } from './archetypes/top-down/TopDownScene';
 import { RunnerScene } from './archetypes/runner/RunnerScene';
 import { examples } from './game/config/examples';
+import { DragonVolcanoScene } from './game/dragon-volcano/DragonVolcanoScene';
 import './style.css';
 
 const requested =
@@ -11,8 +12,12 @@ const requested =
 const exampleId = new URLSearchParams(location.search).get('example');
 const example = exampleId ? examples[exampleId] : undefined;
 const selected = example?.archetype ?? requested;
-const scene =
-  selected === 'sandbox'
+const isDragonGame =
+  new URLSearchParams(location.search).get('game') === 'dragon-volcano-flap' ||
+  (!location.search && !exampleId);
+const scene = isDragonGame
+  ? new DragonVolcanoScene()
+  : selected === 'sandbox'
     ? new SandboxScene()
     : selected === 'top-down'
       ? new TopDownScene(example?.title)
