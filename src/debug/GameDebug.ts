@@ -13,7 +13,11 @@ export type GameDebugApi = {
   restart(): void;
 };
 
-declare global { interface Window { __GAME_DEBUG__?: GameDebugApi } }
+declare global {
+  interface Window {
+    __GAME_DEBUG__?: GameDebugApi;
+  }
+}
 
 export function installGameDebug(scene: BaseGameScene): void {
   if (!import.meta.env.DEV && import.meta.env.MODE !== 'test') return;

@@ -6,13 +6,26 @@ import { RunnerScene } from './archetypes/runner/RunnerScene';
 import { examples } from './game/config/examples';
 import './style.css';
 
-const requested = new URLSearchParams(location.search).get('archetype') ?? 'platformer';
+const requested =
+  new URLSearchParams(location.search).get('archetype') ?? 'platformer';
 const exampleId = new URLSearchParams(location.search).get('example');
 const example = exampleId ? examples[exampleId] : undefined;
 const selected = example?.archetype ?? requested;
-const scene = selected === 'sandbox' ? new SandboxScene() : selected === 'top-down' ? new TopDownScene(example?.title) : selected === 'runner' ? new RunnerScene(example?.title) : new PlatformerScene(example?.title);
+const scene =
+  selected === 'sandbox'
+    ? new SandboxScene()
+    : selected === 'top-down'
+      ? new TopDownScene(example?.title)
+      : selected === 'runner'
+        ? new RunnerScene(example?.title)
+        : new PlatformerScene(example?.title);
 new Phaser.Game({
-  type: Phaser.AUTO, parent: 'game-container', width: 960, height: 540,
-  backgroundColor: '#17213a', physics: { default: 'arcade', arcade: { debug: false } },
-  scene: [scene], scale: { mode: Phaser.Scale.FIT, autoCenter: Phaser.Scale.CENTER_BOTH },
+  type: Phaser.AUTO,
+  parent: 'game-container',
+  width: 960,
+  height: 540,
+  backgroundColor: '#17213a',
+  physics: { default: 'arcade', arcade: { debug: false } },
+  scene: [scene],
+  scale: { mode: Phaser.Scale.FIT, autoCenter: Phaser.Scale.CENTER_BOTH },
 });

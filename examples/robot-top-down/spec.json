@@ -1,1 +1,11 @@
-{ "archetype": "top-down", "title": "Robot Crystal Sweep", "theme": "robot-lab", "requestedMechanics": ["collectibles", "health", "chase-enemy", "projectile-shooting"] }
+{
+  "archetype": "top-down",
+  "title": "Robot Crystal Sweep",
+  "theme": "robot-lab",
+  "requestedMechanics": [
+    "collectibles",
+    "health",
+    "chase-enemy",
+    "projectile-shooting"
+  ]
+}

@@ -1,1 +1,6 @@
-{ "archetype": "runner", "title": "Comet Lane", "theme": "space", "requestedMechanics": ["hazards", "collectibles", "timer"] }
+{
+  "archetype": "runner",
+  "title": "Comet Lane",
+  "theme": "space",
+  "requestedMechanics": ["hazards", "collectibles", "timer"]
+}

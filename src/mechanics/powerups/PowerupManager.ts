@@ -1,2 +1,26 @@
 export type PowerupKind = 'speed' | 'invulnerability' | 'jump' | 'damage';
-export class PowerupManager { private active = new Map<PowerupKind, { multiplier: number; until: number }>(); activate(kind: PowerupKind, multiplier: number, durationMs: number, now = Date.now()): void { this.active.set(kind, { multiplier, until: now + durationMs }); } multiplier(kind: PowerupKind, now = Date.now()): number { const effect = this.active.get(kind); if (!effect || effect.until <= now) { this.active.delete(kind); return 1; } return effect.multiplier; } clear(): void { this.active.clear(); } }
+export class PowerupManager {
+  private active = new Map<
+    PowerupKind,
+    { multiplier: number; until: number }
+  >();
+  activate(
+    kind: PowerupKind,
+    multiplier: number,
+    durationMs: number,
+    now = Date.now(),
+  ): void {
+    this.active.set(kind, { multiplier, until: now + durationMs });
+  }
+  multiplier(kind: PowerupKind, now = Date.now()): number {
+    const effect = this.active.get(kind);
+    if (!effect || effect.until <= now) {
+      this.active.delete(kind);
+      return 1;
+    }
+    return effect.multiplier;
+  }
+  clear(): void {
+    this.active.clear();
+  }
+}
