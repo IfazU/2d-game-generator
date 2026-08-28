@@ -5,10 +5,10 @@ import { BaseGameScene } from '../../core/game/BaseGameScene';
 
 export class RunnerScene extends BaseGameScene {
   private lastDistance = 0;
-  constructor() { super('runner'); }
+  constructor(private readonly gameTitle = 'Endless-Style Runner') { super('runner'); }
   create(): void {
     this.lastDistance = 0; this.cameras.main.setBackgroundColor('#312e81');
-    this.initialize('Endless-Style Runner', 'Space jumps · ↓ fast-falls · R restarts', 'Reach the finish at 4,600m', 1);
+    this.initialize(this.gameTitle, 'Space jumps · ↓ fast-falls · R restarts', 'Reach the finish at 4,600m', 1);
     this.physics.world.setBounds(0, 0, 5000, 540);
     const ground = this.physics.add.staticGroup();
     for (let x = 32; x < 5000; x += 64) ground.create(x, 520, TEXTURES.platform);

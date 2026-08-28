@@ -1,0 +1,1 @@
+{ "archetype": "platformer", "title": "Forest Star Rescue", "theme": "forest", "requestedMechanics": ["collectibles", "hazards", "patrol-enemy"] }

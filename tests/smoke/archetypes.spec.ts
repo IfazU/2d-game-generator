@@ -15,16 +15,19 @@ test.beforeEach(async ({ page }) => {
 });
 
 const cases = [
-  { id: 'platformer', key: 'ArrowRight', axis: 'x' as const },
-  { id: 'top-down', key: 'ArrowDown', axis: 'y' as const },
-  { id: 'runner', key: null, axis: 'x' as const },
+  { id: 'platformer', route: '?archetype=platformer', key: 'ArrowRight', axis: 'x' as const },
+  { id: 'top-down', route: '?archetype=top-down', key: 'ArrowDown', axis: 'y' as const },
+  { id: 'runner', route: '?archetype=runner', key: null, axis: 'x' as const },
+  { id: 'forest-platformer example', route: '?example=forest-platformer', key: 'ArrowRight', axis: 'x' as const },
+  { id: 'robot-top-down example', route: '?example=robot-top-down', key: 'ArrowDown', axis: 'y' as const },
+  { id: 'space-runner example', route: '?example=space-runner', key: null, axis: 'x' as const },
 ];
 
 for (const archetype of cases) {
   test(`${archetype.id} boots, plays, and restarts`, async ({ page }) => {
     const fatalErrors: string[] = [];
     page.on('pageerror', (error) => fatalErrors.push(error.message));
-    await page.goto(`/?archetype=${archetype.id}`);
+    await page.goto(`/${archetype.route}`);
     await expect(page.locator('canvas')).toBeVisible();
     await page.waitForFunction(() => window.__GAME_DEBUG__?.getState().phase === 'playing');
     const before = await page.evaluate(() => window.__GAME_DEBUG__!.getPlayerPosition()!);

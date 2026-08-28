@@ -8,10 +8,10 @@ import { ProjectileSystem } from '../../mechanics/projectile-shooting/Projectile
 
 export class TopDownScene extends BaseGameScene {
   private chasers: ChaseEnemy[] = []; private shooting!: ProjectileSystem; private lastHit = -1000;
-  constructor() { super('top-down'); }
+  constructor(private readonly gameTitle = 'Top-Down Adventure') { super('top-down'); }
   create(): void {
     this.chasers = []; this.lastHit = -1000; this.cameras.main.setBackgroundColor('#163b2c');
-    this.initialize('Top-Down Adventure', 'Arrows move · X shoots · R restarts', 'Collect all 6 crystals', 4);
+    this.initialize(this.gameTitle, 'Arrows move · X shoots · R restarts', 'Collect all 6 crystals', 4);
     this.physics.world.setBounds(0, 0, 1400, 900);
     this.player = this.physics.add.sprite(180, 180, TEXTURES.player).setCollideWorldBounds(true);
     configureCamera(this, this.player, 1400, 900);

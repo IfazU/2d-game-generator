@@ -5,10 +5,10 @@ import { BaseGameScene } from '../../core/game/BaseGameScene';
 
 export class PlatformerScene extends BaseGameScene {
   private collected = 0;
-  constructor() { super('platformer'); }
+  constructor(private readonly gameTitle = 'Platformer') { super('platformer'); }
   create(): void {
     this.collected = 0; this.cameras.main.setBackgroundColor('#7dd3fc');
-    this.initialize('Platformer', '← → move · Space jumps · R restarts', 'Collect all 5 stars');
+    this.initialize(this.gameTitle, '← → move · Space jumps · R restarts', 'Collect all 5 stars');
     this.physics.world.setBounds(0, 0, 1800, 540);
     const platforms = this.physics.add.staticGroup();
     for (const [x, y, width] of [[300, 515, 600], [840, 440, 200], [1140, 360, 220], [1510, 490, 500]] as const) {
