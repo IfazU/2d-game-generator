@@ -10,6 +10,9 @@ The priority is reliable playable results, not engine-level abstraction.
 - Shared lifecycle, input, camera, UI, safe audio, and generated asset fallbacks
 - Collectibles, health/damage, hazards, patrol/chase enemies, projectiles, timers, and powerups
 - Machine-readable mechanic and archetype registries
+- Declarative game catalog with `GameSpec`-driven default selection
+- Configurable archetype physics, HUD, presentation, and key bindings
+- Reusable procedural texture helpers
 - Development-only game debug API
 - Vitest unit checks and Playwright browser smoke checks
 - Three configuration-first example games
@@ -49,10 +52,15 @@ npm run smoke-test
 
 `smoke-test` builds the real browser bundle in test mode, loads it in Chromium without depending on a network port, and verifies startup, controls, progression, restart, debug state, and fatal errors.
 
+See `docs/customization.md` for supported tuning and `docs/improvement-decisions.md` for the kit’s current design decisions and deferred ideas.
+
 ## Architecture
 
 ```text
-GameSpec + src/game/**       ← game branch edits here
+GameSpec + game catalog      ← declarative selection
+            │
+            ▼
+      src/game/**            ← game branch edits here
             │
             ▼
       playable archetype     ← platformer / top-down / runner

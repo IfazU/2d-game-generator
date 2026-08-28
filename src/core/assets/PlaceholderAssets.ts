@@ -1,4 +1,5 @@
 import Phaser from 'phaser';
+import { createRoundedRectTexture } from './ProceduralTextures';
 export const TEXTURES = {
   player: 'character.default',
   enemy: 'enemy.default',
@@ -15,17 +16,7 @@ function rectangle(
   height: number,
   color: number,
 ): void {
-  if (scene.textures.exists(key)) return;
-  const g = scene.make.graphics({ x: 0, y: 0 });
-  g.fillStyle(color).fillRoundedRect(
-    0,
-    0,
-    width,
-    height,
-    Math.min(width, height) / 4,
-  );
-  g.generateTexture(key, width, height);
-  g.destroy();
+  createRoundedRectTexture(scene, { key, width, height, color });
 }
 export function createPlaceholderAssets(scene: Phaser.Scene): void {
   rectangle(scene, TEXTURES.player, 32, 42, 0x60a5fa);

@@ -7,10 +7,11 @@ You are building a game from an existing reusable 2D game kit. Produce a playabl
 ## Required order
 
 1. Read `GAME_SPEC.md` and `src/game/config/GameSpec.ts`.
-2. Inspect the selected archetype and `registry/mechanics.json`.
-3. Configure and compose existing mechanics.
-4. Extend a mechanic only when required.
-5. Add a custom system only when necessary. Never recreate supplied functionality.
+2. Read `docs/customization.md`, then inspect the selected archetype and `registry/mechanics.json`.
+3. Configure `GameSpec`, archetype options, and the game catalog before writing a custom scene.
+4. Compose existing mechanics and procedural texture helpers.
+5. Extend a mechanic only when required.
+6. Add a custom system only when necessary. Never recreate supplied functionality.
 
 ## Protected and editable areas
 
@@ -28,6 +29,8 @@ Run and fix every failure:
 
 ```text
 npm run typecheck
+npm run lint
+npm run format:check
 npm run test
 npm run build
 npm run smoke-test

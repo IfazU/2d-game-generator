@@ -10,6 +10,10 @@ export type GameDebugApi = {
   isLost(): boolean;
   getActiveScene(): string;
   getEntityCount(): number;
+  getClockMs(): number;
+  getCustomState(): Record<string, unknown>;
+  getActions(): string[];
+  runAction(name: string): unknown;
   restart(): void;
 };
 
@@ -30,6 +34,10 @@ export function installGameDebug(scene: BaseGameScene): void {
     isLost: () => scene.session.snapshot().phase === 'lost',
     getActiveScene: () => scene.scene.key,
     getEntityCount: () => scene.children.length,
+    getClockMs: () => scene.time.now,
+    getCustomState: () => scene.getDebugState(),
+    getActions: () => scene.getDebugActions(),
+    runAction: (name) => scene.runDebugAction(name),
     restart: () => scene.restart(),
   };
 }

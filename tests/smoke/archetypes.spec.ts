@@ -1,32 +1,8 @@
 import { expect, test } from '@playwright/test';
-import { readFile } from 'node:fs/promises';
-import { extname, resolve } from 'node:path';
-
-const contentTypes: Record<string, string> = {
-  '.html': 'text/html',
-  '.js': 'application/javascript',
-  '.css': 'text/css',
-  '.json': 'application/json',
-  '.png': 'image/png',
-  '.svg': 'image/svg+xml',
-};
+import { serveBuiltGame, waitForPlayableGame } from './support/builtGame';
 
 test.beforeEach(async ({ page }) => {
-  await page.route('http://game.test/**', async (route) => {
-    const url = new URL(route.request().url());
-    const requestPath =
-      url.pathname === '/' ? 'index.html' : url.pathname.slice(1);
-    const filePath = resolve(process.cwd(), 'dist', requestPath);
-    try {
-      await route.fulfill({
-        body: await readFile(filePath),
-        contentType:
-          contentTypes[extname(filePath)] ?? 'application/octet-stream',
-      });
-    } catch {
-      await route.fulfill({ status: 404, body: 'Not found' });
-    }
-  });
+  await serveBuiltGame(page);
 });
 
 const cases = [
@@ -69,9 +45,7 @@ for (const archetype of cases) {
     page.on('pageerror', (error) => fatalErrors.push(error.message));
     await page.goto(`/${archetype.route}`);
     await expect(page.locator('canvas')).toBeVisible();
-    await page.waitForFunction(
-      () => window.__GAME_DEBUG__?.getState().phase === 'playing',
-    );
+    await waitForPlayableGame(page);
     const before = await page.evaluate(() =>
       window.__GAME_DEBUG__!.getPlayerPosition()!,
     );
@@ -85,9 +59,7 @@ for (const archetype of cases) {
     );
     expect(after[archetype.axis]).toBeGreaterThan(before[archetype.axis]);
     await page.evaluate(() => window.__GAME_DEBUG__!.restart());
-    await page.waitForFunction(
-      () => window.__GAME_DEBUG__?.getState().phase === 'playing',
-    );
+    await waitForPlayableGame(page);
     expect(
       await page.evaluate(() => window.__GAME_DEBUG__!.getEntityCount()),
     ).toBeGreaterThan(3);

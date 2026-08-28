@@ -5,24 +5,44 @@ import { BaseGameScene } from '../../core/game/BaseGameScene';
 import { ChaseEnemy } from '../../mechanics/chase-enemy/ChaseEnemy';
 import { CollectibleSystem } from '../../mechanics/collectibles/CollectibleSystem';
 import { ProjectileSystem } from '../../mechanics/projectile-shooting/ProjectileSystem';
+import {
+  normalizeArchetypeOptions,
+  type CommonArchetypeOptions,
+} from '../ArchetypeOptions';
+
+export type TopDownOptions = CommonArchetypeOptions & {
+  moveSpeed?: number;
+  enemySpeed?: number;
+  chaseRange?: number;
+  projectileSpeed?: number;
+  projectileCooldown?: number;
+  hitInvulnerabilityMs?: number;
+};
 
 export class TopDownScene extends BaseGameScene {
   private chasers: ChaseEnemy[] = [];
   private shooting!: ProjectileSystem;
   private lastHit = -1000;
-  constructor(private readonly gameTitle = 'Top-Down Adventure') {
+  private readonly options: TopDownOptions;
+  constructor(options?: string | TopDownOptions) {
     super('top-down');
+    this.options = normalizeArchetypeOptions(options);
   }
   create(): void {
     this.chasers = [];
     this.lastHit = -1000;
-    this.cameras.main.setBackgroundColor('#163b2c');
-    this.initialize(
-      this.gameTitle,
-      'Arrows move · X shoots · R restarts',
-      'Collect all 6 crystals',
-      4,
+    this.cameras.main.setBackgroundColor(
+      this.options.backgroundColor ?? '#163b2c',
     );
+    this.initialize({
+      title: this.options.title ?? 'Top-Down Adventure',
+      controls:
+        this.options.controlsText ?? 'Arrows move · X shoots · R restarts',
+      objective: this.options.objective ?? 'Collect all 6 crystals',
+      health: this.options.health ?? 4,
+      hud: this.options.hud,
+      input: this.options.input,
+    });
     this.physics.world.setBounds(0, 0, 1400, 900);
     this.player = this.physics.add
       .sprite(180, 180, TEXTURES.player)
@@ -47,7 +67,7 @@ export class TopDownScene extends BaseGameScene {
       required: 6,
       onCollect: (count) => {
         this.session.addScore(10);
-        this.objective = `Collect all 6 crystals (${count}/6)`;
+        this.objective = `${this.options.objective ?? 'Collect all 6 crystals'} (${count}/6)`;
       },
       onComplete: () => this.win(),
     });
@@ -63,18 +83,29 @@ export class TopDownScene extends BaseGameScene {
         TEXTURES.enemy,
       ) as Phaser.Physics.Arcade.Sprite;
       enemy.setCollideWorldBounds(true);
-      this.chasers.push(new ChaseEnemy(enemy, this.player, 105, 420));
+      this.chasers.push(
+        new ChaseEnemy(
+          enemy,
+          this.player,
+          this.options.enemySpeed ?? 105,
+          this.options.chaseRange ?? 420,
+        ),
+      );
     }
     this.physics.add.overlap(this.player, enemies, () => {
-      if (this.time.now - this.lastHit < 800) return;
+      if (
+        this.time.now - this.lastHit <
+        (this.options.hitInvulnerabilityMs ?? 800)
+      )
+        return;
       this.lastHit = this.time.now;
       this.session.damage(1);
       shakeCamera(this);
     });
     this.shooting = new ProjectileSystem(this, {
       texture: TEXTURES.projectile,
-      speed: 500,
-      cooldown: 220,
+      speed: this.options.projectileSpeed ?? 500,
+      cooldown: this.options.projectileCooldown ?? 220,
     });
     this.physics.add.overlap(this.shooting.group, enemies, (shot, enemy) => {
       (shot as Phaser.Physics.Arcade.Sprite).disableBody(true, true);
@@ -89,7 +120,9 @@ export class TopDownScene extends BaseGameScene {
       (this.controls.left.isDown ? 1 : 0);
     const y =
       (this.controls.down.isDown ? 1 : 0) - (this.controls.up.isDown ? 1 : 0);
-    const direction = new Phaser.Math.Vector2(x, y).normalize().scale(220);
+    const direction = new Phaser.Math.Vector2(x, y)
+      .normalize()
+      .scale(this.options.moveSpeed ?? 220);
     this.player.setVelocity(direction.x, direction.y);
     if (Phaser.Input.Keyboard.JustDown(this.controls.primary)) {
       const pointer = this.input.activePointer;
