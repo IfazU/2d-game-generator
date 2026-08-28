@@ -4,6 +4,17 @@
     "entry": "src/archetypes/platformer/PlatformerScene.ts",
     "controls": ["left", "right", "jump"],
     "builtInMechanics": ["collectibles", "hazards", "patrol-enemy"],
+    "configuration": [
+      "title",
+      "objective",
+      "backgroundColor",
+      "hud",
+      "input",
+      "moveSpeed",
+      "jumpSpeed",
+      "enemySpeed",
+      "scorePerCollectible"
+    ],
     "run": "/?archetype=platformer"
   },
   {
@@ -16,6 +27,20 @@
       "chase-enemy",
       "projectile-shooting"
     ],
+    "configuration": [
+      "title",
+      "objective",
+      "backgroundColor",
+      "hud",
+      "input",
+      "moveSpeed",
+      "enemySpeed",
+      "chaseRange",
+      "projectileSpeed",
+      "projectileCooldown",
+      "hitInvulnerabilityMs",
+      "health"
+    ],
     "run": "/?archetype=top-down"
   },
   {
@@ -23,6 +48,20 @@
     "entry": "src/archetypes/runner/RunnerScene.ts",
     "controls": ["jump", "down"],
     "builtInMechanics": ["hazards", "collectibles", "timer"],
+    "configuration": [
+      "title",
+      "objective",
+      "backgroundColor",
+      "hud",
+      "input",
+      "baseSpeed",
+      "maxSpeedBonus",
+      "accelerationDistance",
+      "jumpSpeed",
+      "fastFallSpeed",
+      "finishX",
+      "health"
+    ],
     "run": "/?archetype=runner"
   }
 ]
