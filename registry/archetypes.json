@@ -1,0 +1,5 @@
+[
+  { "id": "platformer", "entry": "src/archetypes/platformer/PlatformerScene.ts", "controls": ["left", "right", "jump"], "builtInMechanics": ["collectibles", "hazards", "patrol-enemy"], "run": "/?archetype=platformer" },
+  { "id": "top-down", "entry": "src/archetypes/top-down/TopDownScene.ts", "controls": ["left", "right", "up", "down", "primary"], "builtInMechanics": ["collectibles", "health", "chase-enemy", "projectile-shooting"], "run": "/?archetype=top-down" },
+  { "id": "runner", "entry": "src/archetypes/runner/RunnerScene.ts", "controls": ["jump", "down"], "builtInMechanics": ["hazards", "collectibles", "timer"], "run": "/?archetype=runner" }
+]

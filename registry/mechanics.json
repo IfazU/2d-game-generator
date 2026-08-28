@@ -1,0 +1,11 @@
+[
+  { "id": "collectibles", "description": "Collect objects, count progress, score, and complete an objective.", "compatibleArchetypes": ["platformer", "top-down", "runner"], "dependencies": [], "configuration": ["required", "value", "onCollect", "onComplete"] },
+  { "id": "health", "description": "Tracks health, healing, death, and optional hit invulnerability.", "compatibleArchetypes": ["platformer", "top-down", "runner"], "dependencies": [], "configuration": ["maximum", "invulnerabilityMs"] },
+  { "id": "damage", "description": "Applies damage and invokes death behavior.", "compatibleArchetypes": ["platformer", "top-down", "runner"], "dependencies": ["health"], "configuration": ["amount", "onDeath"] },
+  { "id": "hazards", "description": "Connects dangerous objects or zones to a target.", "compatibleArchetypes": ["platformer", "top-down", "runner"], "dependencies": ["damage"], "configuration": ["onHit"] },
+  { "id": "patrol-enemy", "description": "Moves an enemy between horizontal limits.", "compatibleArchetypes": ["platformer", "top-down"], "dependencies": [], "configuration": ["min", "max", "speed"] },
+  { "id": "chase-enemy", "description": "Moves an enemy toward a nearby target.", "compatibleArchetypes": ["top-down", "platformer"], "dependencies": [], "configuration": ["speed", "range"] },
+  { "id": "projectile-shooting", "description": "Fires pooled projectiles with cooldown, damage, and lifetime.", "compatibleArchetypes": ["platformer", "top-down", "runner"], "dependencies": ["damage"], "configuration": ["texture", "speed", "cooldown", "damage", "lifetime"] },
+  { "id": "timer", "description": "Counts up or down and invokes expiration once.", "compatibleArchetypes": ["platformer", "top-down", "runner"], "dependencies": [], "configuration": ["durationMs", "onExpire"] },
+  { "id": "powerups", "description": "Provides simple temporary stat multipliers.", "compatibleArchetypes": ["platformer", "top-down", "runner"], "dependencies": [], "configuration": ["kind", "multiplier", "durationMs"] }
+]
