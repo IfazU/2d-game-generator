@@ -8,12 +8,17 @@ import {
 import { GameHud, type HudOptions } from '../ui/GameHud';
 import { GameSession } from './GameSession';
 import { installGameDebug } from '../../debug/GameDebug';
+import {
+  SceneDebugRegistry,
+  type SceneDebugOptions,
+} from '../../debug/SceneDebugRegistry';
 export abstract class BaseGameScene extends Phaser.Scene {
   session!: GameSession;
   controls!: GameControls;
   hud!: GameHud;
   protected objective = '';
   protected player?: Phaser.Physics.Arcade.Sprite;
+  private readonly debugRegistry = new SceneDebugRegistry();
   protected initialize(setup: BaseSceneSetup): void;
   protected initialize(
     title: string,
@@ -47,6 +52,18 @@ export abstract class BaseGameScene extends Phaser.Scene {
   }
   getPlayerPosition(): { x: number; y: number } | null {
     return this.player ? { x: this.player.x, y: this.player.y } : null;
+  }
+  configureDebug(options: SceneDebugOptions): void {
+    this.debugRegistry.configure(options);
+  }
+  getDebugState(): Record<string, unknown> {
+    return this.debugRegistry.getState();
+  }
+  getDebugActions(): string[] {
+    return this.debugRegistry.getActions();
+  }
+  runDebugAction(name: string): unknown {
+    return this.debugRegistry.runAction(name);
   }
   win(): void {
     this.session.win();
