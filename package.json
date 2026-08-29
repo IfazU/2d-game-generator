@@ -4,6 +4,9 @@
   "private": true,
   "type": "module",
   "scripts": {
+    "prepare": "node scripts/setup-git-hooks.mjs",
+    "game:new": "node scripts/create-game-branch.mjs",
+    "game:check-branch": "node scripts/check-game-branch.mjs",
     "dev": "vite",
     "typecheck": "tsc --noEmit",
     "lint": "eslint .",
