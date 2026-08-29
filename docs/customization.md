@@ -38,7 +38,7 @@ The built-in scenes accept an options object. Common options are:
 - `hud`
 - `input`
 
-Platformer tuning adds movement, jump, enemy speed, and collectible score. Top-down tuning adds movement, chase, projectile, cooldown, and hit-invulnerability values. Runner tuning adds base/maximum speed, acceleration, jumping, fast-fall, and finish distance.
+Platformer tuning adds movement, jump, gravity, enemy speed, and collectible score. Top-down tuning adds movement, chase, projectile, cooldown, and hit-invulnerability values. Runner tuning adds base/maximum speed, acceleration, jumping, gravity, fast-fall, and finish distance.
 
 Prefer these options over editing `src/archetypes/**`.
 

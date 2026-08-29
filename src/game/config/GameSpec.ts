@@ -5,6 +5,7 @@ export type ArchetypeId = 'platformer' | 'top-down' | 'runner';
 export type GameplayTuning = {
   moveSpeed?: number;
   jumpSpeed?: number;
+  gravityY?: number;
   enemySpeed?: number;
   chaseRange?: number;
   projectileSpeed?: number;

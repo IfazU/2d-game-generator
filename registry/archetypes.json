@@ -12,6 +12,7 @@
       "input",
       "moveSpeed",
       "jumpSpeed",
+      "gravityY",
       "enemySpeed",
       "scorePerCollectible"
     ],
@@ -58,6 +59,7 @@
       "maxSpeedBonus",
       "accelerationDistance",
       "jumpSpeed",
+      "gravityY",
       "fastFallSpeed",
       "finishX",
       "health"

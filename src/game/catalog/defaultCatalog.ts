@@ -68,6 +68,7 @@ function platformerOptions(spec: GameSpec) {
     ...commonOptions(spec),
     moveSpeed: spec.gameplay?.moveSpeed,
     jumpSpeed: spec.gameplay?.jumpSpeed,
+    gravityY: spec.gameplay?.gravityY,
     enemySpeed: spec.gameplay?.enemySpeed,
     scorePerCollectible: spec.gameplay?.scorePerCollectible,
   };
@@ -92,6 +93,7 @@ function runnerOptions(spec: GameSpec) {
     maxSpeedBonus: spec.gameplay?.maxSpeedBonus,
     accelerationDistance: spec.gameplay?.accelerationDistance,
     jumpSpeed: spec.gameplay?.jumpSpeed,
+    gravityY: spec.gameplay?.gravityY,
     fastFallSpeed: spec.gameplay?.fastFallSpeed,
     finishX: spec.gameplay?.finishX,
   };
