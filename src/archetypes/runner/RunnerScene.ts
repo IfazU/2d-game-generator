@@ -12,6 +12,7 @@ export type RunnerOptions = CommonArchetypeOptions & {
   maxSpeedBonus?: number;
   accelerationDistance?: number;
   jumpSpeed?: number;
+  gravityY?: number;
   fastFallSpeed?: number;
   finishX?: number;
 };
@@ -43,8 +44,19 @@ export class RunnerScene extends BaseGameScene {
       ground.create(x, 520, TEXTURES.platform);
     this.player = this.physics.add
       .sprite(120, 455, TEXTURES.player)
-      .setCollideWorldBounds(true);
+      .setCollideWorldBounds(true)
+      .setGravityY(this.options.gravityY ?? 1000);
     this.physics.add.collider(this.player, ground);
+    this.configureDebug({
+      getState: () => {
+        const body = this.player?.body as
+          Phaser.Physics.Arcade.Body | undefined;
+        return {
+          grounded: Boolean(body?.blocked.down || body?.touching.down),
+          verticalVelocity: body?.velocity.y ?? 0,
+        };
+      },
+    });
     configureCamera(this, this.player, 5000, 540);
     this.cameras.main.setFollowOffset(-220, 0);
     const obstacles = this.physics.add.staticGroup();
@@ -75,7 +87,10 @@ export class RunnerScene extends BaseGameScene {
       );
     this.player.setVelocityX(speed);
     const body = this.player.body as Phaser.Physics.Arcade.Body;
-    if (Phaser.Input.Keyboard.JustDown(this.controls.jump) && body.blocked.down)
+    if (
+      Phaser.Input.Keyboard.JustDown(this.controls.jump) &&
+      (body.blocked.down || body.touching.down)
+    )
       this.player.setVelocityY(-(this.options.jumpSpeed ?? 430));
     if (this.controls.down.isDown && !body.blocked.down)
       this.player.setVelocityY(this.options.fastFallSpeed ?? 520);

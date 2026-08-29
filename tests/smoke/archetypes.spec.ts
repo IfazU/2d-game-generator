@@ -66,3 +66,31 @@ for (const archetype of cases) {
     expect(fatalErrors).toEqual([]);
   });
 }
+
+for (const archetype of ['platformer', 'runner']) {
+  test(`${archetype} jump rises and lands`, async ({ page }) => {
+    await page.goto(`/?archetype=${archetype}`);
+    await waitForPlayableGame(page);
+    await page.waitForFunction(
+      () => window.__GAME_DEBUG__?.getCustomState().grounded === true,
+    );
+    const groundY = await page.evaluate(
+      () => window.__GAME_DEBUG__!.getPlayerPosition()!.y,
+    );
+
+    await page.keyboard.down('Space');
+    await page.waitForFunction(
+      (startY) =>
+        (window.__GAME_DEBUG__?.getPlayerPosition()?.y ?? startY) < startY - 20,
+      groundY,
+    );
+    await page.keyboard.up('Space');
+    await page.waitForFunction(
+      (startY) =>
+        Math.abs(
+          (window.__GAME_DEBUG__?.getPlayerPosition()?.y ?? startY) - startY,
+        ) < 2,
+      groundY,
+    );
+  });
+}

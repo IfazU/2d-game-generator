@@ -10,6 +10,7 @@ import {
 export type PlatformerOptions = CommonArchetypeOptions & {
   moveSpeed?: number;
   jumpSpeed?: number;
+  gravityY?: number;
   enemySpeed?: number;
   scorePerCollectible?: number;
 };
@@ -53,8 +54,19 @@ export class PlatformerScene extends BaseGameScene {
     this.player = this.physics.add
       .sprite(120, 450, TEXTURES.player)
       .setCollideWorldBounds(true)
-      .setBounce(0.05);
+      .setBounce(0.05)
+      .setGravityY(this.options.gravityY ?? 1000);
     this.physics.add.collider(this.player, platforms);
+    this.configureDebug({
+      getState: () => {
+        const body = this.player?.body as
+          Phaser.Physics.Arcade.Body | undefined;
+        return {
+          grounded: Boolean(body?.blocked.down || body?.touching.down),
+          verticalVelocity: body?.velocity.y ?? 0,
+        };
+      },
+    });
     configureCamera(this, this.player, 1800, 540);
     const items = this.physics.add.staticGroup();
     for (const [x, y] of [
@@ -83,7 +95,8 @@ export class PlatformerScene extends BaseGameScene {
       .sprite(1020, 300, TEXTURES.enemy)
       .setVelocityX(this.options.enemySpeed ?? 80)
       .setBounce(1)
-      .setCollideWorldBounds(true);
+      .setCollideWorldBounds(true)
+      .setGravityY(this.options.gravityY ?? 1000);
     this.physics.add.collider(enemy, platforms);
     this.physics.add.overlap(this.player, enemy, () => this.lose());
   }
@@ -97,7 +110,10 @@ export class PlatformerScene extends BaseGameScene {
           ? (this.options.moveSpeed ?? 230)
           : 0,
     );
-    if (Phaser.Input.Keyboard.JustDown(this.controls.jump) && body.blocked.down)
+    if (
+      Phaser.Input.Keyboard.JustDown(this.controls.jump) &&
+      (body.blocked.down || body.touching.down)
+    )
       this.player.setVelocityY(-(this.options.jumpSpeed ?? 430));
     if (this.player.y > 535) this.lose();
   }
