@@ -8,7 +8,8 @@
 6. Compose mechanics listed in `registry/mechanics.json`.
 7. Use procedural textures or add assets under the matching `assets/**` category; retain fallbacks.
 8. Register the game in `src/game/catalog/defaultCatalog.ts` and add a smoke case using the shared harness.
-9. Verify the branch again, then run lint, formatting, typecheck, unit tests, build, and smoke tests.
+9. Preserve the shared fullscreen shell. Check that the game fills both desktop and portrait browser viewports without scrolling or stretching.
+10. Verify the branch again, then run lint, formatting, typecheck, unit tests, build, and smoke tests.
 
 Do not put a reusable mechanic into `main` while finishing a game. Finish the game, then extract it on `kit/<feature>`.
 

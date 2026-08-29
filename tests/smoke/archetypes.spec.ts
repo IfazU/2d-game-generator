@@ -5,6 +5,17 @@ test.beforeEach(async ({ page }) => {
   await serveBuiltGame(page);
 });
 
+test('game shell fills and follows the browser viewport', async ({ page }) => {
+  await page.setViewportSize({ width: 820, height: 1000 });
+  await page.goto('/?archetype=platformer');
+  await waitForPlayableGame(page);
+
+  await expectFullscreenLayout(page, 820, 1000);
+
+  await page.setViewportSize({ width: 1280, height: 720 });
+  await expectFullscreenLayout(page, 1280, 720);
+});
+
 const cases = [
   {
     id: 'platformer',
@@ -93,4 +104,61 @@ for (const archetype of ['platformer', 'runner']) {
       groundY,
     );
   });
+}
+
+async function expectFullscreenLayout(
+  page: import('@playwright/test').Page,
+  viewportWidth: number,
+  viewportHeight: number,
+): Promise<void> {
+  await page.waitForFunction(
+    ({ width, height }) => {
+      const container = document.querySelector('#game-container');
+      if (!container) return false;
+      const bounds = container.getBoundingClientRect();
+      return bounds.width === width && bounds.height === height;
+    },
+    { width: viewportWidth, height: viewportHeight },
+  );
+
+  const layout = await page.evaluate(() => {
+    const container = document.querySelector('#game-container')!;
+    const canvas = document.querySelector('canvas')!;
+    const containerBounds = container.getBoundingClientRect();
+    const canvasBounds = canvas.getBoundingClientRect();
+    return {
+      container: {
+        x: containerBounds.x,
+        y: containerBounds.y,
+        width: containerBounds.width,
+        height: containerBounds.height,
+      },
+      canvas: { width: canvasBounds.width, height: canvasBounds.height },
+      viewport: { width: innerWidth, height: innerHeight },
+      scroll: {
+        width: document.documentElement.scrollWidth,
+        height: document.documentElement.scrollHeight,
+      },
+    };
+  });
+
+  expect(layout.container).toEqual({
+    x: 0,
+    y: 0,
+    width: viewportWidth,
+    height: viewportHeight,
+  });
+  expect(layout.viewport).toEqual({
+    width: viewportWidth,
+    height: viewportHeight,
+  });
+  expect(layout.scroll).toEqual({
+    width: viewportWidth,
+    height: viewportHeight,
+  });
+  expect(layout.canvas.width / layout.canvas.height).toBeCloseTo(16 / 9, 2);
+  expect(
+    Math.abs(layout.canvas.width - viewportWidth) < 1 ||
+      Math.abs(layout.canvas.height - viewportHeight) < 1,
+  ).toBe(true);
 }

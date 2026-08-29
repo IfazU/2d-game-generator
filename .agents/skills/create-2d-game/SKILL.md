@@ -21,4 +21,6 @@ If the requested branch already exists, do not silently reuse or overwrite it. I
 
 Follow the configuration-first order in `AGENTS.md`. Keep game-specific work on the new game branch and reusable kit improvements on a later `kit/<feature>` branch.
 
+Preserve the kit's fullscreen shell in `src/main.ts`, `src/style.css`, and `index.html`. Every game must fill the browser viewport without page scrolling while Phaser preserves the 960×540 design aspect ratio. Keep essential HUD and controls inside that logical safe area; do not add fixed-width page wrappers, outer padding, or automatic browser Fullscreen API calls.
+
 Before reporting completion, rerun `npm run game:check-branch` followed by the full completion gate in `AGENTS.md`. Commit the game on `game/<slug>`; never merge it into `main` unless the user explicitly requests that separate action.
