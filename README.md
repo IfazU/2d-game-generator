@@ -13,6 +13,7 @@ The priority is reliable playable results, not engine-level abstraction.
 - Declarative game catalog with `GameSpec`-driven default selection
 - Configurable archetype physics, HUD, presentation, and key bindings
 - Reusable procedural texture helpers
+- Viewport-filling fullscreen presentation with aspect-safe scaling
 - Development-only game debug API
 - Vitest unit checks and Playwright browser smoke checks
 - Three configuration-first example games
@@ -24,6 +25,8 @@ The priority is reliable playable results, not engine-level abstraction.
 npm install
 npm run dev
 ```
+
+The game fills the available browser viewport automatically. The 16:9 gameplay canvas is scaled without distortion, with letterboxing only when the browser shape differs from the game aspect ratio.
 
 Open one of these paths on the displayed local URL:
 

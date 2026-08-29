@@ -19,6 +19,12 @@ Normal game work belongs in `src/game/**`, `assets/**`, and configuration. Treat
 
 If a feature risks destabilising the game, implement a smaller version that preserves its spirit. Playable beats perfect interpretation.
 
+## Fullscreen presentation
+
+Every game must fill the available browser viewport without page scrolling. Preserve the shared fullscreen shell in `src/main.ts`, `src/style.css`, and `index.html`; Phaser scales the 960×540 logical game area as large as possible without distortion. Keep essential game UI inside that logical safe area.
+
+Do not add fixed-width outer wrappers, page margins, decorative frames, or padding around the canvas. Do not automatically invoke the browser Fullscreen API, which requires a user gesture and is separate from the required viewport-filling layout.
+
 ## Git workflow
 
 Never build a game directly on `main`. Before creating or modifying any game files, run:
