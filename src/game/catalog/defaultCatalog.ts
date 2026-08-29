@@ -4,10 +4,19 @@ import { SandboxScene } from '../../archetypes/sandbox/SandboxScene';
 import { TopDownScene } from '../../archetypes/top-down/TopDownScene';
 import { examples } from '../config/examples';
 import type { GameSpec } from '../config/GameSpec';
+import { gameSpec } from '../config/GameSpec';
+import { SunnySpringsScene } from '../sunny-springs/SunnySpringsScene';
 import { GameCatalog } from './GameCatalog';
 
 export function createDefaultCatalog(): GameCatalog {
   return new GameCatalog()
+    .register({
+      id: 'sunny-springs',
+      description:
+        'Original side-scrolling platform adventure through a clockwork garden.',
+      spec: gameSpec,
+      createScene: () => new SunnySpringsScene(gameSpec),
+    })
     .register({
       id: 'platformer',
       description: 'Playable side-view platformer archetype.',

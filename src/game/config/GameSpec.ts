@@ -42,13 +42,50 @@ export type GameSpec = {
   input?: InputBindings;
 };
 export const gameSpec: GameSpec = {
-  id: 'platformer',
+  id: 'sunny-springs',
   archetype: 'platformer',
-  title: 'New Agent Game',
-  theme: 'placeholder',
-  player: { name: 'Hero' },
-  objective: { description: 'Complete the archetype objective' },
-  requestedMechanics: ['collectibles', 'hazards'],
+  title: 'Sunny Springs Adventure',
+  theme: 'bright hillside clockwork garden',
+  player: { name: 'Pip' },
+  objective: {
+    description: 'Gather 6 sun drops, then reach the windmill',
+    type: 'finish',
+  },
+  enemies: ['clockwork-crawler'],
+  collectible: 'sun-drop',
+  requestedMechanics: [
+    'collectibles',
+    'health',
+    'damage',
+    'hazards',
+    'patrol-enemy',
+  ],
   difficulty: 'normal',
-  visualStyle: 'clean placeholder shapes',
+  visualStyle: 'original code-drawn storybook shapes with warm spring colours',
+  gameplay: {
+    moveSpeed: 255,
+    jumpSpeed: 480,
+    enemySpeed: 72,
+    scorePerCollectible: 100,
+    health: 3,
+  },
+  presentation: {
+    backgroundColor: '#79d7f2',
+    controlsText: '← → / A D move · Space / ↑ / W jump · R restart',
+    hud: {
+      scoreLabel: 'Sun score',
+      healthLabel: 'Hearts',
+      winText: 'The windmill is shining!',
+      loseText: 'Pip needs another try',
+      restartText: 'Press R or click to restart',
+      panelColor: 0x173653,
+      panelAlpha: 0.9,
+      accentColor: '#fff2a8',
+    },
+  },
+  input: {
+    secondary: 65,
+    primary: 68,
+    up: 87,
+  },
 };
