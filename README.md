@@ -81,9 +81,11 @@ Agents should read `AGENTS.md`, `GAME_SPEC.md`, the selected archetype documenta
 Create each game from stable `main` on its own branch:
 
 ```bash
-git switch main
-git switch -c game/<game-slug>
+npm run game:new -- <game-slug>
+npm run game:check-branch
 ```
+
+The creation command requires a clean worktree and refuses to overwrite or silently reuse an existing game branch. `npm install` also activates the repository's pre-commit safeguard, which blocks direct commits on `main` while allowing reviewed merges.
 
 Game work should primarily change `src/game/**`, `assets/**`, and configuration. Normal game creation should not modify `src/core/**`, `src/mechanics/**`, or `src/archetypes/**`.
 

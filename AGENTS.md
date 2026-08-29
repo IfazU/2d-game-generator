@@ -21,13 +21,23 @@ If a feature risks destabilising the game, implement a smaller version that pres
 
 ## Git workflow
 
-Never build a game directly on `main`. Start from clean `main` and create `game/<slug>`. A reusable improvement is later extracted to `kit/<feature>` with tests and docs; do not mix that extraction into the game branch.
+Never build a game directly on `main`. Before creating or modifying any game files, run:
+
+```text
+npm run game:new -- <game-slug>
+npm run game:check-branch
+```
+
+The first command requires a clean worktree, switches to stable `main`, creates a new `game/<slug>` branch, and refuses to reuse an existing branch. If it fails, do not begin game implementation or bypass the safeguard. Preserve existing work and resolve the reported condition.
+
+Commit the finished game on its `game/<slug>` branch. Never merge a game branch into `main` unless the user explicitly requests that separate action. A reusable improvement is later extracted to `kit/<feature>` with tests and docs; do not mix that extraction into the game branch.
 
 ## Completion gate
 
 Run and fix every failure:
 
 ```text
+npm run game:check-branch
 npm run typecheck
 npm run lint
 npm run format:check
